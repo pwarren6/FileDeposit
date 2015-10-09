@@ -2,6 +2,9 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+/*import java.lang.Object;
+import java.nio.file.Files;
+import java.util.ArrayList;*/
 public class FileSelect extends JPanel implements ActionListener {
 	/**
 	 * 
@@ -18,6 +21,8 @@ public class FileSelect extends JPanel implements ActionListener {
 		JScrollPane logScroll = new JScrollPane(log);
 		
 		fc = new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		fc.setMultiSelectionEnabled(true);
 		open = new JButton("Open...",
 				createImageIcon("images/Open16.gif"));
 		open.addActionListener(this);
@@ -36,23 +41,17 @@ public class FileSelect extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e){
 		if (e.getSource() == open){
 			int returnVal = fc.showOpenDialog(FileSelect.this);
-			
 			if(returnVal == JFileChooser.APPROVE_OPTION){
-				File file = fc.getSelectedFile();
-				log.append("You have selected: " + file.getName() + "." + "\n");
-			}else{
-				log.append("Selection cancelled." + "\n");
+				File[] files = fc.getSelectedFiles();
+				log.append("You have selected for backup: " + files.length + " file(s)." + "\n");
 			}
 			log.setCaretPosition(log.getDocument().getLength());
 		}
 		if (e.getSource() == save){
 			int returnVal = fc.showSaveDialog(FileSelect.this);
-			
 			if(returnVal == JFileChooser.APPROVE_OPTION){
-				File file = fc.getSelectedFile();
-				log.append("You are now saving: " + file.getName() + "." + "\n");
-			}else{
-				log.append("Save command cancelled." + "\n");
+				File[] files = fc.getSelectedFiles();
+				log.append("You are now saving: " + files.hashCode() + "." + "\n");
 			}
 			log.setCaretPosition(log.getDocument().getLength());
 		}
