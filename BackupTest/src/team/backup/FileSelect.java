@@ -5,13 +5,10 @@ package team.backup;
 //Members: Patrick Warren, Edward Calderon, Michael Bias, William Bennett, Constantino Spanoudakis
 //File: FileSelect.java
 
-
-
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
 /*import java.lang.Object;
 import java.nio.file.Files;
 import java.util.ArrayList;*/
@@ -27,11 +24,12 @@ public class FileSelect extends JPanel implements ActionListener {
 	public FileSelect(){
 		super(new BorderLayout());
 		log = new JTextArea(5,20);
-		log.setMargin(new Insets(5,5,250,250));
+		log.setMargin(new Insets(5,5,100,250));
 		log.setEditable(false);
 		//Changes the font printed in the log scroll
 		log.setFont(new Font("Serif", Font.BOLD, 14));
 		JScrollPane logScroll = new JScrollPane(log);
+		
 		//Sets the file chooser for browsing and selecting files
 		fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -57,23 +55,38 @@ public class FileSelect extends JPanel implements ActionListener {
 		add(button2, BorderLayout.PAGE_END);
 	}
 	public void actionPerformed(ActionEvent e){
+		int returnVal = fc.showOpenDialog(FileSelect.this);
 		if (e.getSource() == open){
-			int returnVal = fc.showOpenDialog(FileSelect.this);
 			if(returnVal == JFileChooser.APPROVE_OPTION){
 				File[] files = fc.getSelectedFiles();
 				log.append("You have selected for backup: " + "\n");
 				for(int i=0; i < files.length; i++){
 					if(files[i].isFile()){
 						log.append(files[i].getName() + "\n");
+						log.append(files[i].getAbsolutePath() + "\n");
 					}else if(files[i].isDirectory()){
 						log.append(files[i].getName() + "\n");
+						log.append(files[i].getAbsolutePath() + "\n");
 					}
 				}
 			}
 			log.setCaretPosition(log.getDocument().getLength());
 		}
 		if (e.getSource() == backup){
-			//int returnVal = pb.add(popup);
+			if(returnVal == JFileChooser.APPROVE_OPTION){
+				File[] files = fc.getSelectedFiles();
+				for(int j=0; j < files.length; j++){
+					File target = new File(files[j].getName() + "(copy)");
+					if(files[j].isFile() || !target.exists()){
+						try {
+							target.createNewFile();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
 		}
 	}
 	protected static ImageIcon createImageIcon(String path){

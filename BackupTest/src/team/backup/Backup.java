@@ -7,14 +7,30 @@ package team.backup;
 
 
 import java.io.*;
+import java.nio.channels.FileChannel;
 public class Backup {
-	public void BackupFile() throws IOException{
-		File source = new File("" + "(copy)");
-		if (!source.exists()){
-			source.createNewFile();
+	@SuppressWarnings("resource")
+	public static void BackupFile(File source, File target) throws IOException{
+		FileChannel input = null;
+		FileChannel output = null;
+		try{
+			input = new FileInputStream(source).getChannel();
+			output = new FileOutputStream(target).getChannel();
+			output.transferFrom(input, 0, input.size());
+		}finally{
+			input.close();
+			output.close();
 		}
-		FileOutputStream os = new FileOutputStream(source, false);
-		os.close();
+	}
+	public static void main(String[] args) throws IOException{
+		File source = new File("C:/Users/Patrick/Documents/traingate.png");
+		File target = new File(source.getAbsolutePath() + "(copy)");
+		if(!target.exists()){
+			target.createNewFile();
+		}
+		BackupFile(source, target);
+		Runtime.getRuntime().exec("explorer.exe /select, C:/Users/Patrick/");
 	}
 }
+
 
