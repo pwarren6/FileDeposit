@@ -8,7 +8,7 @@
 import java.io.IOException;
 import java.nio.file.*;
 public class Backup {
-	public static void main(String args[]) throws IOException{
+	public static void mainBackup(String args[]) throws IOException{
 		System.getenv("windir");
 		Path FROM = Paths.get("C:/Users/Patrick/tmp");
 		Path TO = Paths.get("C:/Users/Patrick/tmp/");

@@ -84,7 +84,7 @@ public class FileSelect extends JPanel implements ActionListener {
 		frame.pack();
 		frame.setVisible(true);
 	}
-	public static void main(String[] args){
+	public static void mainFileSelect(String[] args){
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
 				UIManager.put("swing.boldMetal", Boolean.FALSE);
