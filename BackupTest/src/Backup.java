@@ -4,31 +4,20 @@
 //Members: Patrick Warren, Edward Calderon, Michael Bias, William Bennett, Constantino Spanoudakis
 //File: Backup.java
 
-import java.io.*;
 
+import java.io.IOException;
+import java.nio.file.*;
 public class Backup {
-	private static void copyFile(File source, File target) throws IOException{
-		InputStream is = null;
-		OutputStream os = null;
-		try{
-			is = new FileInputStream(source);
-			os = new FileOutputStream(target);
-			byte[] buffer = new byte[1024];
-			int length;
-			while ((length = is.read(buffer)) > 0){
-				os.write(buffer, 0, length);
-			}
-		}finally{
-			is.close();
-			os.close();
-		}
-	}
-	public static void main(String[] args) throws IOException{
-		File source = new File("/Users/Patrick/tmp/source.docx");
-		File target = new File("/Users/Patrick/tmp/source.docx");
-		
-		copyFile(source, target);
-		System.out.println("File successfully copied. Thank you for using FileDeposit.");
+	public static void main(String args[]) throws IOException{
+		System.getenv("windir");
+		Path FROM = Paths.get("C:/Users/Patrick/tmp");
+		Path TO = Paths.get("C:/Users/Patrick/tmp/");
+		CopyOption[] options = new CopyOption[]{
+			StandardCopyOption.REPLACE_EXISTING,
+			StandardCopyOption.COPY_ATTRIBUTES
+		};
+		Files.copy(FROM,  TO, options);
+		System.out.println(System.getenv("windir"));
 	}
 }
 

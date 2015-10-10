@@ -1,3 +1,9 @@
+//CS 4850: Senior Project, Section 2
+//Fall 2015
+//Group 3: FileDeposit
+//Members: Patrick Warren, Edward Calderon, Michael Bias, William Bennett, Constantino Spanoudakis
+//File: FileSelect.java
+
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,48 +16,51 @@ public class FileSelect extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JButton open, save;
+	JButton open, backup;
 	JTextArea log;
 	JFileChooser fc;
 	public FileSelect(){
 		super(new BorderLayout());
 		log = new JTextArea(5,20);
-		log.setMargin(new Insets(5,5,5,5));
+		log.setMargin(new Insets(5,5,250,250));
 		log.setEditable(false);
+		//Changes the font printed in the log scroll
+		log.setFont(new Font("Serif", Font.BOLD, 14));
 		JScrollPane logScroll = new JScrollPane(log);
 		
 		fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		fc.setMultiSelectionEnabled(true);
-		open = new JButton("Open...",
+		open = new JButton("Browse...",
 				createImageIcon("images/Open16.gif"));
 		open.addActionListener(this);
 		
-		save = new JButton("Save...",
-				createImageIcon("images/Save16.gif"));
-		save.addActionListener(this);
+		backup = new JButton("Backup Selected Files",
+				createImageIcon("images/Backup.gif"));
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(open);
-		buttonPanel.add(save);
+		
+		JPanel button2 = new JPanel();
+		button2.add(backup);
 		
 		add(buttonPanel, BorderLayout.PAGE_START);
 		add(logScroll, BorderLayout.CENTER);
+		add(button2, BorderLayout.PAGE_END);
 	}
 	public void actionPerformed(ActionEvent e){
 		if (e.getSource() == open){
 			int returnVal = fc.showOpenDialog(FileSelect.this);
 			if(returnVal == JFileChooser.APPROVE_OPTION){
 				File[] files = fc.getSelectedFiles();
-				log.append("You have selected for backup: " + files.length + " file(s)." + "\n");
-			}
-			log.setCaretPosition(log.getDocument().getLength());
-		}
-		if (e.getSource() == save){
-			int returnVal = fc.showSaveDialog(FileSelect.this);
-			if(returnVal == JFileChooser.APPROVE_OPTION){
-				File[] files = fc.getSelectedFiles();
-				log.append("You are now saving: " + files.hashCode() + "." + "\n");
+				log.append("You have selected for backup: " + "\n");
+				for(int i=0; i < files.length; i++){
+					if(files[i].isFile()){
+						log.append(files[i].getName() + "\n");
+					}else if(files[i].isDirectory()){
+						log.append(files[i].getName() + "\n");
+					}
+				}
 			}
 			log.setCaretPosition(log.getDocument().getLength());
 		}
@@ -68,7 +77,6 @@ public class FileSelect extends JPanel implements ActionListener {
 	private static void createAndShowGUI(){
 		JFrame frame = new JFrame("FileSelect");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		frame.add(new FileSelect());
 		frame.pack();
 		frame.setVisible(true);
