@@ -11,7 +11,7 @@ public class Backup {
 	public static void mainBackup(String args[]) throws IOException{
 		System.getenv("windir");
 		Path FROM = Paths.get("C:/Users/Patrick/tmp");
-		Path TO = Paths.get("C:/Users/Patrick/tmp/");
+		Path TO = Paths.get("C:/Users/Patrick/tmp");
 		CopyOption[] options = new CopyOption[]{
 			StandardCopyOption.REPLACE_EXISTING,
 			StandardCopyOption.COPY_ATTRIBUTES

@@ -8,6 +8,7 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 /*import java.lang.Object;
 import java.nio.file.Files;
 import java.util.ArrayList;*/
@@ -19,6 +20,7 @@ public class FileSelect extends JPanel implements ActionListener {
 	JButton open, backup;
 	JTextArea log;
 	JFileChooser fc;
+	JProgressBar pb;
 	public FileSelect(){
 		super(new BorderLayout());
 		log = new JTextArea(5,20);
@@ -27,14 +29,17 @@ public class FileSelect extends JPanel implements ActionListener {
 		//Changes the font printed in the log scroll
 		log.setFont(new Font("Serif", Font.BOLD, 14));
 		JScrollPane logScroll = new JScrollPane(log);
-		
+		//Sets the file chooser for browsing and selecting files
 		fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		fc.setMultiSelectionEnabled(true);
+		//Sets the progress bar to show the backup progress.
+		pb = new JProgressBar();
+		//Creates the Browse button with the JFileChooser
 		open = new JButton("Browse...",
 				createImageIcon("images/Open16.gif"));
 		open.addActionListener(this);
-		
+		//Creates the Backup button with the Backup method
 		backup = new JButton("Backup Selected Files",
 				createImageIcon("images/Backup.gif"));
 		
@@ -65,7 +70,7 @@ public class FileSelect extends JPanel implements ActionListener {
 			log.setCaretPosition(log.getDocument().getLength());
 		}
 		if (e.getSource() == backup){
-			
+			//int returnVal = pb.add(popup);
 		}
 	}
 	protected static ImageIcon createImageIcon(String path){
