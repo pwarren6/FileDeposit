@@ -1,16 +1,20 @@
+package team.backup;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-public class FolderSelect extends JPanel implements ActionListener {
+
+public class FileChooserDemo extends JPanel
+implements ActionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	static private final String newline = "\n";
 	JButton open, save;
 	JTextArea log;
 	JFileChooser fc;
-	public FolderSelect(){
+	public FileChooserDemo(){
 		super(new BorderLayout());
 		log = new JTextArea(5,20);
 		log.setMargin(new Insets(5,5,5,5));
@@ -18,14 +22,13 @@ public class FolderSelect extends JPanel implements ActionListener {
 		JScrollPane logScroll = new JScrollPane(log);
 		
 		fc = new JFileChooser();
-		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		open = new JButton("Open...",
+		
+		open = new JButton("Open a File",
 				createImageIcon("images/Open16.gif"));
 		open.addActionListener(this);
 		
-		save = new JButton("Save...",
+		save = new JButton("Save a File",
 				createImageIcon("images/Save16.gif"));
-		save.addActionListener(this);
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(open);
@@ -36,24 +39,24 @@ public class FolderSelect extends JPanel implements ActionListener {
 	}
 	public void actionPerformed(ActionEvent e){
 		if (e.getSource() == open){
-			int returnVal = fc.showOpenDialog(FolderSelect.this);
+			int returnVal = fc.showOpenDialog(FileChooserDemo.this);
 			
 			if(returnVal == JFileChooser.APPROVE_OPTION){
 				File file = fc.getSelectedFile();
-				log.append("You have selected: " + file.getName() + "." + "\n");
+				log.append("You have selected: " + file.getName() + "." + newline);
 			}else{
-				log.append("Selection cancelled." + "\n");
+				log.append("Selection cancelled." + newline);
 			}
 			log.setCaretPosition(log.getDocument().getLength());
 		}
 		if (e.getSource() == save){
-			int returnVal = fc.showSaveDialog(FolderSelect.this);
+			int returnVal = fc.showOpenDialog(FileChooserDemo.this);
 			
 			if(returnVal == JFileChooser.APPROVE_OPTION){
 				File file = fc.getSelectedFile();
-				log.append("You are now saving: " + file.getName() + "." + "\n");
+				log.append("You are now saving: " + file.getName() + "." + newline);
 			}else{
-				log.append("Save command cancelled." + "\n");
+				log.append("Save command cancelled." + newline);
 			}
 			log.setCaretPosition(log.getDocument().getLength());
 		}
@@ -68,10 +71,10 @@ public class FolderSelect extends JPanel implements ActionListener {
 		}
 	}
 	private static void createAndShowGUI(){
-		JFrame frame = new JFrame("FolderSelect");
+		JFrame frame = new JFrame("FileChooserDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		frame.add(new FolderSelect());
+		frame.add(new FileChooserDemo());
 		frame.pack();
 		frame.setVisible(true);
 	}

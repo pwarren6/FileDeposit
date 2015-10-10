@@ -1,8 +1,11 @@
+package team.backup;
 //CS 4850: Senior Project, Section 2
 //Fall 2015
 //Group 3: FileDeposit
 //Members: Patrick Warren, Edward Calderon, Michael Bias, William Bennett, Constantino Spanoudakis
 //File: FileSelect.java
+
+
 
 import java.io.*;
 import java.awt.*;
@@ -83,13 +86,13 @@ public class FileSelect extends JPanel implements ActionListener {
 		}
 	}
 	private static void createAndShowGUI(){
-		JFrame frame = new JFrame("FileSelect");
+		JFrame frame = new JFrame("Backup");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(new FileSelect());
 		frame.pack();
 		frame.setVisible(true);
 	}
-	public static void mainFileSelect(String[] args){
+	public static void main(String[] args){
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
 				UIManager.put("swing.boldMetal", Boolean.FALSE);
