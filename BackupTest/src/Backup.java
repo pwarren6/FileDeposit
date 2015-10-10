@@ -25,7 +25,7 @@ public class Backup {
 	}
 	public static void main(String[] args) throws IOException{
 		File source = new File("/Users/Patrick/tmp/source.docx");
-		File target = new File("/Users/Patrick/tmp/target.docx");
+		File target = new File("/Users/Patrick/tmp/source.docx");
 		
 		copyFile(source, target);
 		System.out.println("File successfully copied. Thank you for using FileDeposit.");
