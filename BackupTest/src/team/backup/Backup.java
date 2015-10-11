@@ -23,8 +23,8 @@ public class Backup {
 		}
 	}
 	public static void main(String[] args) throws IOException{
-		File source = new File("C:/Users/Patrick/Documents/traingate.png");
-		File target = new File("C:/Users/Patrick/Documents/traingate(1).png");
+		File source = new File("C:/Users/Patrick/Documents/clientbackup.png");
+		File target = new File("C:/Users/Patrick/Documents/client.png");
 		if(!target.exists()){
 			target.createNewFile();
 			System.out.println("Backup has been created.");
