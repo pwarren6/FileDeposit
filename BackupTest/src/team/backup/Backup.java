@@ -24,9 +24,12 @@ public class Backup {
 	}
 	public static void main(String[] args) throws IOException{
 		File source = new File("C:/Users/Patrick/Documents/traingate.png");
-		File target = new File(source.getAbsolutePath() + "(copy)");
+		File target = new File("C:/Users/Patrick/Documents/traingate(1).png");
 		if(!target.exists()){
 			target.createNewFile();
+			System.out.println("Backup has been created.");
+		}else{
+			System.err.println("Backup failed.");
 		}
 		BackupFile(source, target);
 		Runtime.getRuntime().exec("explorer.exe /select, C:/Users/Patrick/");
