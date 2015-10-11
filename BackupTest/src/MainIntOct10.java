@@ -53,6 +53,10 @@ import java.awt.GridBagConstraints;
 import javax.swing.JSplitPane;
 import java.awt.Insets;
 import java.awt.TextField;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 
 
@@ -60,7 +64,8 @@ public class MainInt {
 
 	private JFrame frame;
 	private JTextField textField;
-	private JTextField textField_1;
+	private JPasswordField passwordField;
+        private final String authFile = "authFile.txt";
 
 	/**
 	 * Launch the application.
@@ -112,10 +117,10 @@ public class MainInt {
 		panelMenu.add(textField);
 		textField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(498, 167, 184, 29);
-		panelMenu.add(textField_1);
-		textField_1.setColumns(10);
+		passwordField = new JPasswordField();
+		passwordField.setBounds(498, 167, 184, 29);
+		panelMenu.add(passwordField);
+		passwordField.setColumns(10);
 		
 		JLabel lblUserName = new JLabel("User Name");
 		lblUserName.setBounds(169, 142, 115, 20);
@@ -157,9 +162,18 @@ public class MainInt {
 			@Override
 		
 		public void actionPerformed(ActionEvent arg0){
-				panelMenu.setVisible(false);
-				panelStuff.setVisible(true);
+                                if (!textField.getText().isEmpty() && passwordField.getPassword() != null)
+                                {
+                                    if(authenticate(textField.getText(), String.copyValueOf(passwordField.getPassword()))){
+                                    panelMenu.setVisible(false);
+                                    panelStuff.setVisible(true);
+                                    }
+                                    else {
+                                        JOptionPane.showMessageDialog(frame, "Invalid Credentials",
+                                                "Log-In Failed", JOptionPane.ERROR_MESSAGE);
+                                    }
 				//System.exit(0);
+                                }
 			}
 		}
 	);
@@ -206,4 +220,33 @@ public class MainInt {
 			}
 		});
 	}
+        
+        /*
+        Attempts to authenticate an inputted username and password against information in
+        an external file with user info.
+        */
+        private boolean authenticate(String username, String password){
+            if(username.isEmpty() && password.isEmpty()){
+                System.out.println("Error: Non-null username and password expected.");
+            }
+            Boolean login = false;
+            
+            try {
+            BufferedReader readFile = new BufferedReader(new FileReader(authFile));
+            //This algorithm will be replaced once we figure out how the user/password file is created
+            String userInfo = username + password;
+            String line = readFile.readLine();
+            while (line != null) {
+                if (line.equals(userInfo)) {
+                    login = true;
+                    break;
+                }
+                line = readFile.readLine();
+            }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            return login;
+        }
 }
