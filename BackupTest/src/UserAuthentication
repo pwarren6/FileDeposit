@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
@@ -20,14 +22,15 @@ public final class UserAuthentication {
 	private static final int serverPort = 0;
 	
 	/*
-    Attempts to authenticate an inputed username and password against information in
-    a local file with user info.
+    Attempts to authenticate a username and password against information in the local authFile.
     */
-    public static boolean localAuthenticate(String username, String password){
+    public static String localAuthenticate(String username, String password){
         if(username.isEmpty() && password.isEmpty()){
             System.out.println("Error: Non-null username and password expected.");
+            return null;
         }
-        Boolean login = false;
+        
+        String user = null;
         
         try {
         BufferedReader readFile = new BufferedReader(new FileReader(authFile));
@@ -36,7 +39,7 @@ public final class UserAuthentication {
         		if (line.equals(username)) {
         			line = readFile.readLine();
         			if (PasswordHash.validatePassword(password, line)){
-        				login = true;
+        				user = username;
         				break;
         			}
         		}
@@ -46,17 +49,53 @@ public final class UserAuthentication {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return login;
+        return user;
     }
+    
+    /*
+     * Checks the local authFile for a specific username. Returns true if the name is already in use, false otherwise.
+     */
+    public static Boolean nameExists(String username) {
+    	if(username.isEmpty()){
+            System.out.println("Error: Non-null username expected.");
+            return null;
+        }
+    	
+    	Boolean exists = false;
+    	try {
+            BufferedReader readFile = new BufferedReader(new FileReader(authFile));
+            String line = readFile.readLine();
+            	while (line != null) {
+            		if (line.equals(username)) {
+            			exists = true;
+            			break;
+            		}
+                line = readFile.readLine();
+            	}
+            readFile.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    	
+    	return exists;
+    }
+    
     /*
      * Sends a username and password to the server to be authenticated
      */
     
-    /*
-    public static boolean serverAuthenticate(String username, String password) {
+    public static void serverAuthenticate(String username, String password) {
+    	if(username.isEmpty() && password.isEmpty()){
+            System.out.println("Error: Non-null username and password expected.");
+            return;
+        }
+    	
     	try {
 			Socket socket = new Socket(serverHost, serverPort);
-			
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out.close();
+			in.close();
 			socket.close();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -65,14 +104,19 @@ public final class UserAuthentication {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
     }
-    */
     
     /*
      * Creates encrypted user Log-In info for testing. 
      * The number of hash iterations, salt, and hashed password are stored in the line below the username.
      */
     public static void storeNewUser(String username, String password){
+    	if(username.isEmpty() && password.isEmpty()){
+            System.out.println("Error: Non-null username and password expected.");
+            return;
+        }
+    	
 		try {
 			BufferedWriter writeFile = new BufferedWriter(new FileWriter(authFile, true));
 			String userHash = PasswordHash.createHash(password);
